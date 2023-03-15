@@ -57,24 +57,27 @@ public final class RecipeSaver  {
 	@Nullable
     public static Recipe loadRecipe(@NotNull ConfigurationSection section, @NotNull NamespacedKey namespacedKey, @Nullable ItemStack result) {
     	result = (result == null) ? new ItemStack(Material.matchMaterial(section.getString("result"))) : result;
+    	ConfigurationSection items = section.getConfigurationSection("items");
+    	
         switch (section.getString("type")) {
             case "shaped" -> {
                 ShapedRecipe recipe = new ShapedRecipe(namespacedKey, result);
-                ConfigurationSection items = section.getConfigurationSection("items");
                 List<String> shape = section.getStringList("shape");
                 recipe.shape(shape.toArray(String[]::new));
+                
                 loadIngredients(items, recipe);
-
                 return recipe;
             }
             case "shapeless" -> {
                 ShapelessRecipe recipe = new ShapelessRecipe(namespacedKey, result);
-                ConfigurationSection items = section.getConfigurationSection("items");
+                
                 loadIngredients(items, recipe);
                 return recipe;
-            }
+            }       
+			default -> {
+				return null;
+			}
         }
-        return null;
     }
 
     /**
