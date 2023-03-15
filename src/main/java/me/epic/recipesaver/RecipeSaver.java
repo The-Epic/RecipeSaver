@@ -35,7 +35,7 @@ public final class RecipeSaver  {
      * @param result Result for the recipe
      * @return ShapedRecipe from FileConfiguration
      */
-    public static ShapedRecipe loadRecipe(FileConfiguration fileConfiguration, String path, NamespacedKey key, Material result) {
+    public static ShapedRecipe loadRecipe(FileConfiguration fileConfiguration, String path, NamespacedKey key, ItemStack result) {
         return loadRecipe(fileConfiguration.getConfigurationSection(path), key, result);
     }
 
@@ -47,8 +47,8 @@ public final class RecipeSaver  {
      * @param result Result for the recipe
      * @return Shaped recipe from ConfigurationSecton
      */
-    public static ShapedRecipe loadRecipe(ConfigurationSection section, NamespacedKey namespacedKey, Material result) {
-        ShapedRecipe recipe = new ShapedRecipe(namespacedKey, new ItemStack(result == null ? Material.matchMaterial(section.getString("result")) : result));
+    public static ShapedRecipe loadRecipe(ConfigurationSection section, NamespacedKey namespacedKey, ItemStack result) {
+        ShapedRecipe recipe = new ShapedRecipe(namespacedKey, result == null ? new ItemStack(Material.matchMaterial(section.getString("result"))) : result);
         ConfigurationSection items = section.getConfigurationSection("items");
         List<String> shape = section.getStringList("shape");
         recipe.shape(shape.toArray(String[]::new));
