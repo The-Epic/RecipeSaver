@@ -1,0 +1,48 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+    id "com.github.johnrengelman.shadow" version "7.1.0"
+}
+
+group = 'me.epic'
+version = '1.0.0-SNAPSHOT'
+
+repositories {
+    mavenLocal()
+}
+
+dependencies {
+    compileOnly "org.spigotmc:spigot:1.18.2-R0.1-SNAPSHOT"
+}
+
+
+shadowJar {
+    archiveClassifier.set('')
+}
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+
+publishing {
+    publications {
+        shadow(MavenPublication) { publication ->
+            project.shadow.component(publication)
+            artifacts = [shadowJar, javadocJar, sourcesJar]
+
+            repositories {
+                maven {
+
+
+                    credentials {
+                        username = "epic"
+                        password = "$repoSecret"
+                    }
+                    url = 'https://repo.epicebic.xyz/public/'
+                }
+            }
+        }
+    }
+}

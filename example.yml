@@ -1,0 +1,11 @@
+recipe:
+  result: minecraft:diamond_sword
+  items:
+    x: minecraft:coal
+    y:
+      - "minecraft:oak_planks"
+      - "minecraft:birch_planks"
+  shape:
+    - " x "
+    - "y y"
+    - " x "
