@@ -1,4 +1,5 @@
 recipe:
+  type: shaped
   result: minecraft:diamond_sword
   items:
     x: minecraft:coal
