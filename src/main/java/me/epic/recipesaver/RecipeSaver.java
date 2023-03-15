@@ -1,6 +1,7 @@
 package me.epic.recipesaver;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -87,12 +88,14 @@ public final class RecipeSaver  {
 			char recipeKey = key.charAt(0);
 			
 			if (items.isList(key)) {
-				RecipeChoice choice = new RecipeChoice.MaterialChoice(items.getStringList(key).stream().map(Material::matchMaterial).toArray(Material[]::new));
+				RecipeChoice choice = new RecipeChoice.MaterialChoice(items.getStringList(key).stream().map(Material::matchMaterial).filter(Objects::nonNull).toArray(Material[]::new));
 				addIngredient(recipe, recipeKey, choice);
 				continue;
 			}
 			
 			Material material = Material.matchMaterial(items.getString(key));
+			if (material == null) continue;
+			
 			addIngredient(recipe, recipeKey, new RecipeChoice.MaterialChoice(material));
 		}
 	}
