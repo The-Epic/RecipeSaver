@@ -16,18 +16,6 @@ import java.util.List;
 public final class RecipeSaver  {
 
     /**
-     * Loads a recipe from a specified {@link ConfigurationSection} path in a FileConfiguration
-     *
-     * @param fileConfiguration to get the config section
-     * @param path to config section
-     * @param key NamespacedKey to register the recipe on
-     * @return ShapedRecipe from FileConfiguration
-     */
-    public static ShapedRecipe loadRecipe(FileConfiguration fileConfiguration, String path, NamespacedKey key) {
-        return loadRecipe(fileConfiguration.getConfigurationSection(path), key);
-    }
-
-    /**
      * Loads a recipe from a {@link ConfigurationSection}
      *
      * @param section to load recipe
@@ -35,7 +23,32 @@ public final class RecipeSaver  {
      * @return Shaped recipe from ConfigurationSecton
      */
     public static ShapedRecipe loadRecipe(ConfigurationSection section, NamespacedKey namespacedKey) {
-        ShapedRecipe recipe = new ShapedRecipe(namespacedKey, new ItemStack(Material.matchMaterial(section.getString("result"))));
+        return loadRecipe(section, namespacedKey, null);
+    }
+
+    /**
+     * Loads a recipe from a specified {@link ConfigurationSection} path in a FileConfiguration
+     *
+     * @param fileConfiguration to get the config section
+     * @param path to config section
+     * @param key NamespacedKey to register the recipe on
+     * @param result Result for the recipe
+     * @return ShapedRecipe from FileConfiguration
+     */
+    public static ShapedRecipe loadRecipe(FileConfiguration fileConfiguration, String path, NamespacedKey key, Material result) {
+        return loadRecipe(fileConfiguration.getConfigurationSection(path), key, result);
+    }
+
+    /**
+     * Loads a recipe from a {@link ConfigurationSection}
+     *
+     * @param section to load recipe
+     * @param namespacedKey NamespacedKey to register the recipe on
+     * @param result Result for the recipe
+     * @return Shaped recipe from ConfigurationSecton
+     */
+    public static ShapedRecipe loadRecipe(ConfigurationSection section, NamespacedKey namespacedKey, Material result) {
+        ShapedRecipe recipe = new ShapedRecipe(namespacedKey, new ItemStack(result == null ? Material.matchMaterial(section.getString("result")) : result));
         ConfigurationSection items = section.getConfigurationSection("items");
         List<String> shape = section.getStringList("shape");
         recipe.shape(shape.toArray(String[]::new));
